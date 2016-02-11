@@ -70,17 +70,12 @@ module.exports = function(grunt) {
       }
     },
 
-    git_deploy: {
-        your_target: {
-          options: {
-            url: 'ssh://root@162.243.158.226/opt/mean/empty/site.git'
-          },
-          src: '/deploy'
-        },
-      },
-
-    shell: {
-      prodServer: {
+    gitpush: {
+      your_target: {
+        options: {
+          remote: 'live',
+          brach: 'master'
+        }
       }
     },
   });
@@ -89,11 +84,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-git-deploy');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-git');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
@@ -122,18 +117,19 @@ module.exports = function(grunt) {
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
-      grunt.task.run(['deploy']);
-      grunt.task.run(['git_deploy']);
+      grunt.task.run(['gitpush']);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
 
-  grunt.registerTask('deploy', [
-    'eslint',
-    'concat',
-    'uglify',
-    'cssmin'
-  ]);
-
+  grunt.registerTask('deploy', function(n) {
+    grunt.task.run([
+      'eslint',
+      'concat',
+      'uglify',
+      'cssmin',
+      'upload'
+    ]);
+  });
 };
