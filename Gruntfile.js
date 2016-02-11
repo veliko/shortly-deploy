@@ -75,7 +75,7 @@ module.exports = function(grunt) {
           options: {
             url: 'ssh://root@162.243.158.226/opt/mean/empty/site.git'
           },
-          src: '/directory/to/deploy'
+          src: '/deploy'
         },
       },
 
