@@ -3,6 +3,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: ['public/lib/jquery.js','public/lib/underscore.js','public/lib/backbone.js','public/lib/handlebars.js','public/client/**/*.js'],
+        dest: 'public/dist/built.js',
+      },
     },
 
     mochaTest: {
@@ -21,6 +28,14 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      options: {
+        mangle: false
+      },
+      my_target: {
+          files: {
+            'public/dist/built.min.js': ['public/dist/built.js']
+          }
+        }
     },
 
     eslint: {
