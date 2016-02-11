@@ -39,12 +39,17 @@ module.exports = function(grunt) {
     },
 
     eslint: {
-      target: [
-        // Add list of files to lint here
+      src: [
+        'public/client/**/*.js', 'server.js', 'server-config.js'
       ]
     },
 
     cssmin: {
+      target: {
+        files: {
+          'public/style.min.css' : ['public/style.css']
+        }
+      }
     },
 
     watch: {
@@ -54,8 +59,9 @@ module.exports = function(grunt) {
           'public/lib/**/*.js',
         ],
         tasks: [
+          'eslint',
           'concat',
-          'uglify'
+          'uglify',
         ]
       },
       css: {
@@ -120,8 +126,11 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-    // add your deploy tasks here
+    'eslint',
+    'concat',
+    'uglify',
+    'cssmin'
   ]);
 
-
+//run lint, concat, uglify
 };
