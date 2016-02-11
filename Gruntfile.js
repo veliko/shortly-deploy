@@ -70,6 +70,15 @@ module.exports = function(grunt) {
       }
     },
 
+    git_deploy: {
+        your_target: {
+          options: {
+            url: 'ssh://root@162.243.158.226/opt/mean/empty/site.git'
+          },
+          src: '/directory/to/deploy'
+        },
+      },
+
     shell: {
       prodServer: {
       }
@@ -80,6 +89,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-git-deploy');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
@@ -99,13 +109,6 @@ module.exports = function(grunt) {
   });
 
 
-  grunt.registerTask('upload', function(n) {
-    if (grunt.option('prod')) {
-      // add your production server task here
-    }
-    grunt.task.run([ 'server-dev' ]);
-  });
-
   ////////////////////////////////////////////////////
   // Main grunt tasks
   ////////////////////////////////////////////////////
@@ -119,7 +122,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
-      // add your production server task here
+      grunt.task.run(['deploy']);
+      grunt.task.run(['git_deploy']);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
