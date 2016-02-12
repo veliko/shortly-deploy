@@ -1,3 +1,22 @@
+var bcrypt = require('bcrypt-nodejs');
+var Promise = require('bluebird');
+var mongoose = require('mongoose');
+var dbUri = process.env.MONGOLAB_URI || 'mongodb://127.0.0.1';
+
+mongoose.connect(dbUri);
+
+
+// MONGO URLS TABLE
+// var urlsSchema = new db.Schema({
+//   id: 'integer',
+//   url: String,
+// });
+// var Url = mongoose.model('Link', urlsSchema); 
+// module.exports.Url = Url;
+
+
+/////////////////////////////////////////////////////////////////////
+
 var path = require('path');
 var knex = require('knex')({
   client: 'sqlite3',
@@ -5,6 +24,7 @@ var knex = require('knex')({
     filename: path.join(__dirname, '../db/shortly.sqlite')
   }
 });
+
 var db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('urls').then(function(exists) {
@@ -35,5 +55,6 @@ db.knex.schema.hasTable('users').then(function(exists) {
     });
   }
 });
+
 
 module.exports = db;
